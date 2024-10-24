@@ -1,12 +1,15 @@
 export class Tile {
-    private width: number = 0;
-    private height: number = 0;
+    public width: number = 0;
+    public height: number = 0;
 
-    private x: number = 0;
-    private y: number = 0;
-    private z: number = 0;
+    public row: number = 0;
+    public col: number = 0;
+
+    public x: number = 0;
+    public y: number = 0;
+    public z: number = 0;
     
-    constructor(width: number, height: number, x: number, y: number, z: number) {
+    constructor(width: number, height: number, x: number = 0, y: number = 0, z: number = 0) {
         this.width = width;
         this.height = height;
 
@@ -15,13 +18,11 @@ export class Tile {
         this.z = z;
     }
 
-    public render = (ctx: CanvasRenderingContext2D): void => {
+    protected draw(ctx: CanvasRenderingContext2D) {
         const midX: number = Math.round(this.width / 2);
         const midY: number = Math.round(this.height / 2);
 
-        ctx.save();
-        ctx.translate(this.x, this.y);
-
+        ctx.strokeStyle = "#3b3b3b";
         ctx.fillStyle = "green";
         ctx.beginPath();
 
@@ -31,8 +32,15 @@ export class Tile {
         ctx.lineTo(this.width, midY);
         ctx.lineTo(midX, 0);
 
+        ctx.stroke();
         ctx.fill();
         ctx.closePath();
+    }
+
+    public render = (ctx: CanvasRenderingContext2D): void => {
+        ctx.save();
+        ctx.translate(this.x, this.y - this.z);
+        this.draw(ctx);
         ctx.restore();
     }
 }
