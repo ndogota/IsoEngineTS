@@ -2,6 +2,8 @@ import { Tile } from "./tile";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, TILE_WIDTH, TILE_HEIGHT } from './constants';
 
 export class Map {
+    // TODO : - Start to think about how entities and objects will work on
+    //          this engine (specialy with the render)
     private tiles:Tile[] = [];
     public rows: number = 0;
     public cols: number = 0;
@@ -26,8 +28,8 @@ export class Map {
         tile.x = ((col - row)) * midWidth;
         tile.y = ((col + row)) * midHeight;
     }
-    
-    public reset(): void {
+
+    public putTiles(): void {
         this.tiles = [];
 
         for (let i: number = 0; i < this.rows; i++) {
@@ -44,19 +46,8 @@ export class Map {
             }
         }
     }
-
-    // everything of that will be changed with the new render system (just for the test)
-    public getTileAt(row: number, col: number): Tile | undefined {
-        return this.tiles.find((tile: Tile) => (tile.row === row && tile.col === col));
-    }
-
-    // everything of that will be changed with the new render system (just for the test)
+    
     public setTileAt(tile: Tile, row:number, col:number) {
-        const current: Tile | undefined = this.getTileAt(row, col);
-        if (current != null) {
-            const index: number = this.tiles.indexOf(current);
-            this.tiles.splice(index, 1);
-        }
         this.calcPos(tile, row, col);
         this.tiles.push(tile);
     }
@@ -70,6 +61,7 @@ export class Map {
                 tile.render(ctx);
             }
         )
+
         ctx.restore();
     }
 }
