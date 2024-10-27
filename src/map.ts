@@ -1,9 +1,7 @@
 import { Tile } from "./tile";
-import { CANVAS_WIDTH, CANVAS_HEIGHT, TILE_WIDTH, TILE_HEIGHT } from './constants';
+import { TILE_WIDTH, TILE_HEIGHT } from './constants';
 
 export class Map {
-    // TODO : - Start to think about how entities and objects will work on
-    //          this engine (specialy with the render)
     private tiles:Tile[] = [];
     public rows: number = 0;
     public cols: number = 0;
@@ -21,9 +19,6 @@ export class Map {
     protected calcPos(tile:Tile, row: number, col: number) {
         const midWidth:number = TILE_WIDTH >> 1;
         const midHeight:number = TILE_HEIGHT >> 1;
-
-        tile.row = row;
-        tile.col = col;
 
         tile.x = ((col - row)) * midWidth;
         tile.y = ((col + row)) * midHeight;
@@ -45,11 +40,6 @@ export class Map {
                 this.tiles.push(tile);
             }
         }
-    }
-    
-    public setTileAt(tile: Tile, row:number, col:number) {
-        this.calcPos(tile, row, col);
-        this.tiles.push(tile);
     }
 
     public render(ctx:CanvasRenderingContext2D) {

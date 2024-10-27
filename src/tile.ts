@@ -2,9 +2,6 @@ export class Tile {
     public width: number = 0;
     public height: number = 0;
 
-    public row: number = 0;
-    public col: number = 0;
-
     public x: number = 0;
     public y: number = 0;
     public z: number = 0;
@@ -23,7 +20,7 @@ export class Tile {
         const midY: number = Math.round(this.height / 2);
 
         ctx.strokeStyle = "#3b3b3b";
-        ctx.fillStyle = "green";
+        ctx.fillStyle = "grey";
         ctx.beginPath();
 
         ctx.moveTo(midX, 0);
