@@ -1,12 +1,16 @@
-import { TILE_WIDTH, TILE_HEIGHT, CANVAS_WIDTH, CANVAS_HEIGHT, FPS } from './constants';
+import { TILE_HEIGHT, CANVAS_WIDTH, CANVAS_HEIGHT, FPS, MAP_ROWS, MAP_COLS } from './constants';
 import { Fps } from './fps';
-import { Map } from "./map";
+import { Map, GridPoint } from "./map";
+import { Player } from "./player";
+import { Keyboard } from "./input";
 import { Renderable, Updatable } from "./interfaces";
 
 export class Game {
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
     private map: Map;
+    private player: Player;
+    private keyboard: Keyboard;
     private fpsDisplay: Fps;
 
     private msPrev = window.performance.now();
@@ -23,17 +27,34 @@ export class Game {
         this.canvas.height = canvasHeight;
 
         // init components
-        this.map = new Map(30, 30, (CANVAS_WIDTH >> 1) - TILE_HEIGHT, 0);
+        this.map = new Map(MAP_ROWS, MAP_COLS, (CANVAS_WIDTH >> 1) - TILE_HEIGHT, TILE_HEIGHT * 3);
+        this.keyboard = new Keyboard();
+        this.player = new Player(this.map, this.keyboard, MAP_ROWS >> 1, MAP_COLS >> 1);
         this.fpsDisplay = new Fps();
 
-        // register components for update and render
-        this.updatables.push(this.fpsDisplay);
-        this.renderables.push(this.map, this.fpsDisplay);
+        // register components for update and render (render order = draw order)
+        this.updatables.push(this.player, this.fpsDisplay);
+        this.renderables.push(this.map, this.player, this.fpsDisplay);
+
+        this.canvas.addEventListener("mousemove", (e: MouseEvent) => this.onMouseMove(e));
     }
 
-    public start():void {
+    public start(): void {
         this.map.putTiles();
         requestAnimationFrame(() => this.gameLoop())
+    }
+
+    private onMouseMove(e: MouseEvent): void {
+        // the canvas is scaled by CSS, so map client coords back to canvas pixels
+        const rect: DOMRect = this.canvas.getBoundingClientRect();
+        const scaleX: number = this.canvas.width / rect.width;
+        const scaleY: number = this.canvas.height / rect.height;
+
+        const canvasX: number = (e.clientX - rect.left) * scaleX;
+        const canvasY: number = (e.clientY - rect.top) * scaleY;
+
+        const grid: GridPoint = this.map.screenToGrid(canvasX, canvasY);
+        this.map.setHover(grid.row, grid.col);
     }
 
     private update(deltaTime: number): void {

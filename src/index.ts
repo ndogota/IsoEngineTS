@@ -1,5 +1,4 @@
 import { Game } from './game';
-import { Tile } from './tile';
 
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from './constants';
 

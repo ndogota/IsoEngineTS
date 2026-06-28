@@ -5,7 +5,14 @@ export class Tile {
     public x: number = 0;
     public y: number = 0;
     public z: number = 0;
-    
+
+    // base appearance; the map sets these to build a checkerboard floor
+    public fill: string = "#8a8a8a";
+    public stroke: string = "#3b3b3b";
+
+    // toggled by the map when the cursor hovers this tile
+    public highlighted: boolean = false;
+
     constructor(width: number, height: number, x: number = 0, y: number = 0, z: number = 0) {
         this.width = width;
         this.height = height;
@@ -19,8 +26,8 @@ export class Tile {
         const midX: number = Math.round(this.width / 2);
         const midY: number = Math.round(this.height / 2);
 
-        ctx.strokeStyle = "#3b3b3b";
-        ctx.fillStyle = "grey";
+        ctx.strokeStyle = this.stroke;
+        ctx.fillStyle = this.highlighted ? "#f2c14e" : this.fill;
         ctx.beginPath();
 
         ctx.moveTo(midX, 0);

@@ -1,16 +1,23 @@
 {
-  "name": "001",
+  "name": "iso-engine-ts",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Experimental isometric tile engine in TypeScript, with a fixed-timestep game loop, an update/render queue, and a tile/map/player system.",
+  "main": "src/index.ts",
   "scripts": {
     "start": "webpack --watch",
     "build": "webpack",
+    "gen:sprite": "node tools/gen-sprite.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": [
+    "typescript",
+    "isometric",
+    "game-engine",
+    "canvas",
+    "tile-engine"
+  ],
+  "author": "ndogota",
+  "license": "MIT",
   "dependencies": {
     "ts-loader": "^9.5.1",
     "typescript": "^5.6.3",
